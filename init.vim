@@ -14,6 +14,8 @@ set noerrorbells
 "Indenting - use tabs
 set smartindent
 set noexpandtab
+set tabstop=4
+set shiftwidth=4
 
 set nu
 set nowrap
@@ -27,7 +29,6 @@ set scrolloff=8
 
 "View hidden characters
 :set listchars=tab:→\ ,space:·,nbsp:␣,trail:•,eol:¶,precedes:«,extends:»
-:set list
 
 "coc.nvim
 " TextEdit might fail if hidden is not set.
@@ -51,13 +52,14 @@ set foldlevel=2
 "Default page width visual
 set colorcolumn=80
 highlight ColorColumn ctermbg=0 guibg=lightgrey
+autocmd BufNewFile,BufRead *.cs set colorcolumn=160
+autocmd BufNewFile,BufRead *.xaml set colorcolumn=160
 
 "Plugins
 call plug#begin('~/.vim/plugged')
 
 " C#
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'w0rp/ale'
 
 Plug 'tpope/vim-fugitive'
 Plug 'vim-utils/vim-man'
@@ -115,7 +117,6 @@ let loaded_matchparen = 1
 let mapleader = " "
 
 let g:netrw_browse_split = 2
-let g:vrfr_rg = 'true'
 let g:netrw_banner = 0
 let g:netrw_winsize = 25
 
@@ -162,6 +163,10 @@ imap <MiddleMouse> <Nop>
 
 "Auto indent
 nnoremap <leader>ai mz :%g!/region/normal ==`z<CR>
+
+"Close buffer
+nnoremap <Leader>q :bd<CR>
+nnoremap <Leader>qa :bufdo bd<CR>
 
 "End Personal remapping
 
@@ -210,6 +215,8 @@ function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
+
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
 " Use K to show documentation in preview window.
 nnoremap <silent> K :call <SID>show_documentation()<CR>
