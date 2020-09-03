@@ -1,5 +1,31 @@
 cd /SourceTree
 
+"Trying to solve fzf not showing preview properly.
+"set shell=cmd.exe
+"set shellcmdflag=/c\ doskey\ bash=C:/Progra~1/Git/bin/bash.exe
+
+"set shell=cmd.exe\ /k\ doskey\ bash=C:/Progra~1/Git/bin/bash.exe
+
+"set shellcmdflag=/k\ doskey bash=C:/Progra~1/Git/bin/bash.exe
+"set shell=C:\\Progra~1\\Git\\bin\\bash.exe
+
+"set shell=C:/Progra~1/Git/bin/sh.exe
+"set shellcmdflag=-c
+"set shellxquote=\"
+
+" Terminal settings
+":tnoremap <C-[> <C-\><C-n>
+"if has("win32")
+"  " Note, you need to empty the file Git\etc\motd
+"  " to get rid of the 'Welcome to Git' message
+"  set shell=cmd.exe
+"  set shellcmdflag=/c\ \"C:\\Progra~1\\Git\\bin\\bash.exe\ --login\ -c\"
+"
+"  " Leader c for commandline, Leader e to exit
+"  nmap <Leader>c :term<CR>acmd.exe /c "C:\\Progra~1\Git\bin\bash.exe --login -i"<CR>
+"  :tnoremap <Leader>e exit<CR>exit<CR>
+"endif
+
 "syntax
 syntax on
 "xaml
@@ -39,15 +65,17 @@ set nowritebackup
 set cmdheight=2
 " Having longer updatetime (default is 4000 ms = 4 s)
 " leads to noticeable delays and poor user experience.
-set updatetime=50
+"set updatetime=50
+
 " Don't pass messages to |ins-completion-menu|.
 set shortmess+=c
 
 "folding
 set foldmethod=syntax
 set foldnestmax=10
-set nofoldenable
-set foldlevel=2
+set foldlevel=3
+
+" C# Folding : ~/nvim/after/syntax/cs.vim https://github.com/OmniSharp/omnisharp-vim/issues/218
 
 "Default page width visual
 set colorcolumn=80
@@ -120,6 +148,9 @@ let g:netrw_browse_split = 2
 let g:netrw_banner = 0
 let g:netrw_winsize = 25
 
+let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 0.8 } }
+let $FZF_DEFAULT_OPTS='--reverse'
+
 nnoremap <leader>pw :Rg <C-R>=expand("<cword>")<CR><CR>
 nnoremap <leader>phw :h <C-R>=expand("<cword>")<CR><CR>
 nnoremap <leader>h :wincmd h<CR>
@@ -130,6 +161,7 @@ nnoremap <leader>u :UndotreeShow<CR>
 nnoremap <leader>pv :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
 nnoremap <Leader>ps :Rg<SPACE>
 nnoremap <C-p> :GFiles<CR>
+nnoremap <C-l> :Buffers<CR>
 nnoremap <Leader>pf :Files<CR>
 nnoremap <Leader>+ :vertical resize +5<CR>
 nnoremap <Leader>- :vertical resize -5<CR>
@@ -180,6 +212,7 @@ inoremap <C-c> <esc>
 "coc.nvim mapping
 inoremap <silent><expr> <C-space> coc#refresh()
 " GoTo code navigation.
+nmap <leader>cs :CocSearch <C-R>=expand("<cword>")<CR><CR>
 nmap <leader>gd <Plug>(coc-definition)
 nmap <leader>gy <Plug>(coc-type-definition)
 nmap <leader>gi <Plug>(coc-implementation)
