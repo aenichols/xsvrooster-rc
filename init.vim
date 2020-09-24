@@ -29,7 +29,7 @@ cd /SourceTree
 "syntax
 syntax on
 "xaml
-au BufRead,BufNewFile *.xaml setfiletype xml
+au BufNewFile,BufRead *.xaml    setf xml
 
 set guicursor=
 set noshowmatch
@@ -72,8 +72,10 @@ set shortmess+=c
 
 "folding
 set foldmethod=syntax
-set foldnestmax=10
-set foldlevel=3
+"set foldnestmax=10
+"set foldlevel=3
+set foldcolumn=2
+set foldenable
 
 " C# Folding : ~/nvim/after/syntax/cs.vim https://github.com/OmniSharp/omnisharp-vim/issues/218
 
@@ -95,6 +97,7 @@ Plug 'mbbill/undotree'
 Plug 'sheerun/vim-polyglot'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'stsewd/fzf-checkout.vim'
 
 "  I AM SO SORRY FOR DOING COLOR SCHEMES IN MY VIMRC, BUT I HAVE
 "  TOOOOOOOOOOOOO
@@ -150,6 +153,40 @@ let g:netrw_winsize = 25
 
 let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 0.8 } }
 let $FZF_DEFAULT_OPTS='--reverse'
+let g:fzf_branch_actions = {
+      \ 'rebase': {
+      \   'prompt': 'Rebase> ',
+      \   'execute': 'echo system("{git} rebase {branch}")',
+      \   'multiple': v:false,
+      \   'keymap': 'ctrl-r',
+      \   'required': ['branch'],
+      \   'confirm': v:true,
+      \ },
+      \ 'track': {
+      \   'prompt': 'Track> ',
+      \   'execute': 'echo system("{git} checkout --track {branch}")',
+      \   'multiple': v:false,
+      \   'keymap': 'ctrl-t',
+      \   'required': ['branch'],
+      \   'confirm': v:true,
+      \ },
+      \ 'upstream': {
+      \   'prompt': 'Upstream> ',
+      \   'execute': 'echo system("{git} push --set-upstream origin {branch}")',
+      \   'multiple': v:false,
+      \   'keymap': 'ctrl-u',
+      \   'required': ['branch'],
+      \   'confirm': v:true,
+      \ },
+      \}
+
+nnoremap <leader>gc :GBranches<CR>
+nnoremap <leader>glc :GBranches --locals<CR>
+nnoremap <leader>grc :GBranches --remotes<CR>
+nnoremap <leader>gfa :Git fetch --all<CR>
+nnoremap <leader>gfm :Git fetch -f origin master:master<CR>
+
+nnoremap <leader>grom :Git rebase origin/master<CR>
 
 nnoremap <leader>pw :Rg <C-R>=expand("<cword>")<CR><CR>
 nnoremap <leader>phw :h <C-R>=expand("<cword>")<CR><CR>
@@ -168,6 +205,10 @@ nnoremap <Leader>- :vertical resize -5<CR>
 nnoremap <Leader>rp :resize 100<CR>
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
+vnoremap X "_d
+
+" greatest remap ever
+vnoremap <leader>p "_dP
 
 "Begin personal mapping
 map S ddO
@@ -206,7 +247,6 @@ nnoremap <Leader>qa :bufdo bd<CR>
 nnoremap <leader>vwm :colorscheme gruvbox<bar>:set background=dark<CR>
 nmap <leader>vtm :highlight Pmenu ctermbg=gray guibg=gray
 
-vnoremap X "_d
 inoremap <C-c> <esc>
 
 "coc.nvim mapping
