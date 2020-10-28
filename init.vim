@@ -34,7 +34,7 @@ au BufNewFile,BufRead *.xaml    setf xml
 set guicursor=
 set noshowmatch
 set relativenumber
-set nohlsearch
+set hlsearch
 set noerrorbells
 
 "Indenting - use tabs
@@ -47,6 +47,7 @@ set nu
 set nowrap
 set smartcase
 set noswapfile
+set nobackup
 set undodir=~/.vim/undodir
 set undofile
 set incsearch
@@ -91,13 +92,21 @@ call plug#begin('~/.vim/plugged')
 " C#
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
+"We don't deserve Tim Pope
+Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-fugitive'
+
 Plug 'vim-utils/vim-man'
 Plug 'mbbill/undotree'
 Plug 'sheerun/vim-polyglot'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'stsewd/fzf-checkout.vim'
+
+" telescope requirements...
+"Plug 'nvim-lua/popup.nvim'
+"Plug 'nvim-lua/plenary.nvim'
+"Plug 'nvim-lua/telescope.nvim'
 
 "  I AM SO SORRY FOR DOING COLOR SCHEMES IN MY VIMRC, BUT I HAVE
 "  TOOOOOOOOOOOOO
@@ -119,6 +128,10 @@ if exists('+termguicolors')
     let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 endif
 let g:gruvbox_invert_selection='0'
+
+" telescope
+"let g:telescope_cache_results = 1
+"let g:telescope_prime_fuzzy_find  = 1
 
 " --- vim go (polyglot) settings.
 let g:go_highlight_build_constraints = 1
@@ -150,6 +163,7 @@ let mapleader = " "
 let g:netrw_browse_split = 2
 let g:netrw_banner = 0
 let g:netrw_winsize = 25
+let g:netrw_localrmdir='rm -r'
 
 let g:fzf_layout = { 'window': { 'width': 0.8, 'height': 0.8 } }
 let $FZF_DEFAULT_OPTS='--reverse'
@@ -188,17 +202,19 @@ nnoremap <leader>gfm :Git fetch -f origin master:master<CR>
 
 nnoremap <leader>grom :Git rebase origin/master<CR>
 
+"nnoremap <leader>pw :lua require('telescope.builtin').grep_string { search = vim.fn.expand("<cword>") }<CR>
 nnoremap <leader>pw :Rg <C-R>=expand("<cword>")<CR><CR>
-nnoremap <leader>phw :h <C-R>=expand("<cword>")<CR><CR>
+nnoremap <leader>bs /<C-R>=escape(expand("<cWORD>"), "/")<CR><CR>
 nnoremap <leader>h :wincmd h<CR>
 nnoremap <leader>j :wincmd j<CR>
 nnoremap <leader>k :wincmd k<CR>
 nnoremap <leader>l :wincmd l<CR>
 nnoremap <leader>u :UndotreeShow<CR>
 nnoremap <leader>pv :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
+"nnoremap <leader>ps :lua require('telescope.builtin').grep_string({ search = vim.fn.input("Grep For >")})<CR>
 nnoremap <Leader>ps :Rg<SPACE>
+"nnoremap <C-p> :lua require('telescope.builtin').git_files()<CR>
 nnoremap <C-p> :GFiles<CR>
-nnoremap <C-l> :Buffers<CR>
 nnoremap <Leader>pf :Files<CR>
 nnoremap <Leader>+ :vertical resize +5<CR>
 nnoremap <Leader>- :vertical resize -5<CR>
@@ -207,10 +223,18 @@ vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 vnoremap X "_d
 
+" Maps Alt-[Arrows] to resizing a window split
+map <silent> <A-LEFT> <C-w><
+map <silent> <A-DOWN> <C-W>-
+map <silent> <A-UP> <C-W>+
+map <silent> <A-RIGHT> <C-w>>
+
 " greatest remap ever
 vnoremap <leader>p "_dP
 
 "Begin personal mapping
+nnoremap <C-l> :Buffers<CR>
+"nnoremap <C-l> :lua require('telescope.builtin').buffers()<CR>
 map S ddO
 map cc S
 
@@ -308,13 +332,13 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 "coc.nvim additional setting end
 
 " Sweet Sweet FuGITive
-nmap <leader>gh :diffget //3<CR>
-nmap <leader>gu :diffget //2<CR>
+nmap <leader>gl :diffget //3<CR>
+nmap <leader>gh :diffget //2<CR>
 nmap <leader>gs :G<CR>
 
 augroup highlight_yank
     autocmd!
-    autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank("IncSearch", 50)
+    autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank({timeout = 40})
 augroup END
 
 "Handle white space

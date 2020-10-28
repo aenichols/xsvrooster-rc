@@ -1,4 +1,4 @@
 GuiPopupmenu 0
-"highlight Folded guibg=#00FFFFFF
-"highlight FoldColumn guibg=#00FFFFFF
-"highlight SignColumn guibg=#00FFFFFF
+highlight Folded guibg=#252626
+"highlight FoldColumn guibg=#252626
+highlight SignColumn guibg=#252626
