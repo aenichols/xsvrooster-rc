@@ -1,36 +1,11 @@
 cd /SourceTree
 
-"Trying to solve fzf not showing preview properly.
-"set shell=cmd.exe
-"set shellcmdflag=/c\ doskey\ bash=C:/Progra~1/Git/bin/bash.exe
-
-"set shell=cmd.exe\ /k\ doskey\ bash=C:/Progra~1/Git/bin/bash.exe
-
-"set shellcmdflag=/k\ doskey bash=C:/Progra~1/Git/bin/bash.exe
-"set shell=C:\\Progra~1\\Git\\bin\\bash.exe
-
-"set shell=C:/Progra~1/Git/bin/sh.exe
-"set shellcmdflag=-c
-"set shellxquote=\"
-
-" Terminal settings
-":tnoremap <C-[> <C-\><C-n>
-"if has("win32")
-"  " Note, you need to empty the file Git\etc\motd
-"  " to get rid of the 'Welcome to Git' message
-"  set shell=cmd.exe
-"  set shellcmdflag=/c\ \"C:\\Progra~1\\Git\\bin\\bash.exe\ --login\ -c\"
-"
-"  " Leader c for commandline, Leader e to exit
-"  nmap <Leader>c :term<CR>acmd.exe /c "C:\\Progra~1\Git\bin\bash.exe --login -i"<CR>
-"  :tnoremap <Leader>e exit<CR>exit<CR>
-"endif
-
 "syntax
 syntax on
 "xaml
 au BufNewFile,BufRead *.xaml    setf xml
 
+set exrc
 set guicursor=
 set noshowmatch
 set relativenumber
@@ -54,6 +29,8 @@ set incsearch
 set termguicolors
 set scrolloff=8
 
+set mouse=a
+
 "View hidden characters
 :set listchars=tab:→\ ,space:·,nbsp:␣,trail:•,eol:¶,precedes:«,extends:»
 
@@ -64,17 +41,12 @@ set nobackup
 set nowritebackup
 " Give more space for displaying messages.
 set cmdheight=2
-" Having longer updatetime (default is 4000 ms = 4 s)
-" leads to noticeable delays and poor user experience.
-"set updatetime=50
 
 " Don't pass messages to |ins-completion-menu|.
 set shortmess+=c
 
 "folding
 set foldmethod=syntax
-"set foldnestmax=10
-"set foldlevel=3
 set foldcolumn=2
 set foldenable
 
@@ -82,15 +54,15 @@ set foldenable
 
 "Default page width visual
 set colorcolumn=80
-highlight ColorColumn ctermbg=0 guibg=lightgrey
 autocmd BufNewFile,BufRead *.cs set colorcolumn=160
 autocmd BufNewFile,BufRead *.xaml set colorcolumn=160
 
 "Plugins
 call plug#begin('~/.vim/plugged')
 
-" C#
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+"Omni
+Plug 'OmniSharp/omnisharp-vim'
+Plug 'dense-analysis/ale'
 
 "We don't deserve Tim Pope
 Plug 'tpope/vim-abolish'
@@ -98,15 +70,12 @@ Plug 'tpope/vim-fugitive'
 
 Plug 'vim-utils/vim-man'
 Plug 'mbbill/undotree'
-Plug 'sheerun/vim-polyglot'
+
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'stsewd/fzf-checkout.vim'
 
-" telescope requirements...
-"Plug 'nvim-lua/popup.nvim'
-"Plug 'nvim-lua/plenary.nvim'
-"Plug 'nvim-lua/telescope.nvim'
+Plug 'ncm2/float-preview.nvim'
 
 "  I AM SO SORRY FOR DOING COLOR SCHEMES IN MY VIMRC, BUT I HAVE
 "  TOOOOOOOOOOOOO
@@ -115,42 +84,89 @@ Plug 'sainnhe/gruvbox-material'
 Plug 'phanviet/vim-monokai-pro'
 Plug 'vim-airline/vim-airline'
 Plug 'flazz/vim-colorschemes'
-"Plug 'ThePrimeagen/vim-be-good', {'do': './install.sh'}
 
 call plug#end()
 
-"coc.nvim omnisharp
-let g:coc_global_extensions=[ 'coc-omnisharp']
+let g:float_preview#docked = 0
+let g:float_preview#max_width = 300 "Default 50
+set completeopt=longest,menuone,noinsert,noselect
+set previewheight=5
 
-let g:gruvbox_contrast_dark = 'hard'
-if exists('+termguicolors')
-    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-endif
-let g:gruvbox_invert_selection='0'
+" Tell ALE to use OmniSharp for linting C# files, and no other linters.
+let g:ale_linters = { 'cs': ['OmniSharp'] }
+let g:ale_sign_column_always = 1
+nmap <silent> <Leader>g[ <Plug>(ale_previous_wrap)
+nmap <silent> <Leader>g] <Plug>(ale_next_wrap)
 
-" telescope
-"let g:telescope_cache_results = 1
-"let g:telescope_prime_fuzzy_find  = 1
+"Omni use fzf
+let g:OmniSharp_selector_ui = 'fzf'
+let g:OmniSharp_selector_findusages = 'fzf'
 
-" --- vim go (polyglot) settings.
-let g:go_highlight_build_constraints = 1
-let g:go_highlight_extra_types = 1
-let g:go_highlight_fields = 1
-let g:go_highlight_functions = 1
-let g:go_highlight_methods = 1
-let g:go_highlight_operators = 1
-let g:go_highlight_structs = 1
-let g:go_highlight_types = 1
-let g:go_highlight_function_parameters = 1
-let g:go_highlight_function_calls = 1
-let g:go_highlight_generate_tags = 1
-let g:go_highlight_format_strings = 1
-let g:go_highlight_variable_declarations = 1
-let g:go_auto_sameids = 1
+augroup omnisharp_commands
+  autocmd!
 
-colorscheme gruvbox
-set background=dark
+  " Show type information automatically when the cursor stops moving.
+  " Note that the type is echoed to the Vim command line, and will overwrite
+  " any other messages in this space including e.g. ALE linting messages.
+  autocmd CursorHold *.cs OmniSharpTypeLookup
+
+  " The following commands are contextual, based on the cursor position.
+  autocmd FileType cs nmap <silent> <buffer> <Leader>gd <Plug>(omnisharp_go_to_definition)
+  autocmd FileType cs nmap <silent> <buffer> <Leader>ofu <Plug>(omnisharp_find_usages)
+  autocmd FileType cs nmap <silent> <buffer> <Leader>ofi <Plug>(omnisharp_find_implementations)
+  autocmd FileType cs nmap <silent> <buffer> <Leader>opd <Plug>(omnisharp_preview_definition)
+  autocmd FileType cs nmap <silent> <buffer> <Leader>opi <Plug>(omnisharp_preview_implementations)
+  autocmd FileType cs nmap <silent> <buffer> <Leader>ot <Plug>(omnisharp_type_lookup)
+  autocmd FileType cs nmap <silent> <buffer> K <Plug>(omnisharp_documentation)
+  autocmd FileType cs nmap <silent> <buffer> <Leader>ofs <Plug>(omnisharp_find_symbol)
+  autocmd FileType cs nmap <silent> <buffer> <Leader>ofx <Plug>(omnisharp_fix_usings)
+  autocmd FileType cs nmap <silent> <buffer> <C-\> <Plug>(omnisharp_signature_help)
+  autocmd FileType cs imap <silent> <buffer> <C-\> <Plug>(omnisharp_signature_help)
+
+  " Navigate up and down by method/property/field
+  autocmd FileType cs nmap <silent> <buffer> [[ <Plug>(omnisharp_navigate_up)
+  autocmd FileType cs nmap <silent> <buffer> ]] <Plug>(omnisharp_navigate_down)
+  " Find all code errors/warnings for the current solution and populate the quickfix window
+  autocmd FileType cs nmap <silent> <buffer> <Leader>ogcc <Plug>(omnisharp_global_code_check)
+  " Contextual code actions (uses fzf, vim-clap, CtrlP or unite.vim selector when available)
+  autocmd FileType cs nmap <silent> <buffer> <Leader>oca <Plug>(omnisharp_code_actions)
+  autocmd FileType cs xmap <silent> <buffer> <Leader>oca <Plug>(omnisharp_code_actions)
+  " Repeat the last code action performed (does not use a selector)
+  autocmd FileType cs nmap <silent> <buffer> <Leader>o. <Plug>(omnisharp_code_action_repeat)
+  autocmd FileType cs xmap <silent> <buffer> <Leader>o. <Plug>(omnisharp_code_action_repeat)
+
+  autocmd FileType cs nmap <silent> <buffer> <Leader>o= <Plug>(omnisharp_code_format)
+
+  autocmd FileType cs nmap <silent> <buffer> <Leader>orr <Plug>(omnisharp_rename)
+
+  autocmd FileType cs nmap <silent> <buffer> <Leader>ore <Plug>(omnisharp_restart_server)
+  autocmd FileType cs nmap <silent> <buffer> <Leader>ost <Plug>(omnisharp_start_server)
+  autocmd FileType cs nmap <silent> <buffer> <Leader>osp <Plug>(omnisharp_stop_server)
+augroup END
+
+let g:theprimeagen_colorscheme = "gruvbox"
+fun! ColorMyPencils()
+    colorscheme ayu
+    set background=dark
+
+    let g:gruvbox_contrast_dark = 'hard'
+    if exists('+termguicolors')
+        let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+        let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+    endif
+    let g:gruvbox_invert_selection='0'
+
+    highlight Visual term=reverse cterm=reverse guibg=#504945
+
+    highlight ColorColumn ctermbg=0 guibg=grey
+    highlight Normal guibg=#282828 " for gruvbox dark, use 'none' for trans term
+    highlight Folded guibg=none
+
+    highlight LineNr guifg=#5eacd3
+    highlight netrwDir guifg=#5eacd3
+    highlight qfFileName guifg=#aed75f
+endfun
+call ColorMyPencils()
 
 if executable('rg')
     let g:rg_derive_root='true'
@@ -192,6 +208,14 @@ let g:fzf_branch_actions = {
       \   'required': ['branch'],
       \   'confirm': v:true,
       \ },
+      \ 'fetch': {
+      \   'prompt': 'Fetch> ',
+      \   'execute': 'echo system("{git} fetch -f origin {branch}:{branch}")',
+      \   'multiple': v:false,
+      \   'keymap': 'ctrl-f',
+      \   'required': ['branch'],
+      \   'confirm': v:true,
+      \ }
       \}
 
 nnoremap <leader>gc :GBranches<CR>
@@ -202,7 +226,6 @@ nnoremap <leader>gfm :Git fetch -f origin master:master<CR>
 
 nnoremap <leader>grom :Git rebase origin/master<CR>
 
-"nnoremap <leader>pw :lua require('telescope.builtin').grep_string { search = vim.fn.expand("<cword>") }<CR>
 nnoremap <leader>pw :Rg <C-R>=expand("<cword>")<CR><CR>
 nnoremap <leader>bs /<C-R>=escape(expand("<cWORD>"), "/")<CR><CR>
 nnoremap <leader>h :wincmd h<CR>
@@ -211,9 +234,8 @@ nnoremap <leader>k :wincmd k<CR>
 nnoremap <leader>l :wincmd l<CR>
 nnoremap <leader>u :UndotreeShow<CR>
 nnoremap <leader>pv :wincmd v<bar> :Ex <bar> :vertical resize 30<CR>
-"nnoremap <leader>ps :lua require('telescope.builtin').grep_string({ search = vim.fn.input("Grep For >")})<CR>
+
 nnoremap <Leader>ps :Rg<SPACE>
-"nnoremap <C-p> :lua require('telescope.builtin').git_files()<CR>
 nnoremap <C-p> :GFiles<CR>
 nnoremap <Leader>pf :Files<CR>
 nnoremap <Leader>+ :vertical resize +5<CR>
@@ -233,8 +255,8 @@ map <silent> <A-RIGHT> <C-w>>
 vnoremap <leader>p "_dP
 
 "Begin personal mapping
+nnoremap <C-w>f <C-w>_<C-w>|
 nnoremap <C-l> :Buffers<CR>
-"nnoremap <C-l> :lua require('telescope.builtin').buffers()<CR>
 map S ddO
 map cc S
 
@@ -268,68 +290,8 @@ nnoremap <Leader>qa :bufdo bd<CR>
 "End Personal remapping
 
 " Vim with me
-nnoremap <leader>vwm :colorscheme gruvbox<bar>:set background=dark<CR>
-nmap <leader>vtm :highlight Pmenu ctermbg=gray guibg=gray
-
+nnoremap <leader>vwm :call ColorMyPencils()<CR>
 inoremap <C-c> <esc>
-
-"coc.nvim mapping
-inoremap <silent><expr> <C-space> coc#refresh()
-" GoTo code navigation.
-nmap <leader>cs :CocSearch <C-R>=expand("<cword>")<CR><CR>
-nmap <leader>gd <Plug>(coc-definition)
-nmap <leader>gy <Plug>(coc-type-definition)
-nmap <leader>gi <Plug>(coc-implementation)
-nmap <leader>gr <Plug>(coc-references)
-nmap <leader>rr <Plug>(coc-rename)
-nmap <leader>g[ <Plug>(coc-diagnostic-prev)
-nmap <leader>g] <Plug>(coc-diagnostic-next)
-nmap <silent> <leader>gp <Plug>(coc-diagnostic-prev-error)
-nmap <silent> <leader>gn <Plug>(coc-diagnostic-next-error)
-nnoremap <leader>cr :CocRestart
-
-"coc.nvim additional setting begin
-
-" Always show the signcolumn, otherwise it would shift the text each time
-" diagnostics appear/become resolved.
-if has("patch-8.1.1564")
-  " Recently vim can merge signcolumn and number column into one
-  set signcolumn=number
-else
-  set signcolumn=yes
-endif
-
-" Use tab for trigger completion with characters ahead and navigate.
-" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
-" other plugin before putting this into your config.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-command! -nargs=0 Prettier :CocCommand prettier.formatFile
-
-" Use K to show documentation in preview window.
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
-
-" Highlight the symbol and its references when holding the cursor.
-autocmd CursorHold * silent call CocActionAsync('highlight')
-
-"coc.nvim additional setting end
 
 " Sweet Sweet FuGITive
 nmap <leader>gl :diffget //3<CR>
@@ -349,3 +311,51 @@ fun! TrimWhitespace()
 endfun
 
 autocmd BufWritePre * :call TrimWhitespace()
+
+" Colorize line numbers in insert and visual modes
+" ------------------------------------------------
+function! SetCursorLineNrColorInsert(mode)
+    " Insert mode: blue
+    if a:mode == "i"
+        highlight CursorLineNr ctermfg=4 guifg=#26d2c4
+
+    " Replace mode: red
+    elseif a:mode == "r"
+        highlight CursorLineNr ctermfg=1 guifg=#dc322f
+
+    endif
+endfunction
+
+
+function! SetCursorLineNrColorVisual()
+    set updatetime=0
+
+    " Visual mode: yellow
+    highlight CursorLineNr cterm=none ctermfg=9 guifg=#d29026
+
+	" Set list
+	set list
+
+	return ''
+endfunction
+
+
+function! ResetCursorLineNrColor()
+    set updatetime=4000
+    highlight CursorLineNr cterm=none ctermfg=0 guifg=#d2c926
+	set nolist
+endfunction
+
+
+vnoremap <silent> <expr> <SID>SetCursorLineNrColorVisual SetCursorLineNrColorVisual()
+nnoremap <silent> <script> v v<SID>SetCursorLineNrColorVisual
+nnoremap <silent> <script> V V<SID>SetCursorLineNrColorVisual
+nnoremap <silent> <script> <C-v> <C-v><SID>SetCursorLineNrColorVisual
+
+
+augroup CursorLineNrColorSwap
+    autocmd!
+    autocmd InsertEnter * call SetCursorLineNrColorInsert(v:insertmode)
+    autocmd InsertLeave * call ResetCursorLineNrColor()
+    autocmd CursorHold * call ResetCursorLineNrColor()
+augroup END
