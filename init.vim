@@ -4,6 +4,8 @@ cd /SourceTree
 syntax on
 "xaml
 au BufNewFile,BufRead *.xaml    setf xml
+"Razor
+au BufNewFile,BufRead *.cshtml set syntax=html
 
 set exrc
 set guicursor=
@@ -85,6 +87,11 @@ Plug 'phanviet/vim-monokai-pro'
 Plug 'vim-airline/vim-airline'
 Plug 'flazz/vim-colorschemes'
 
+Plug 'brooth/far.vim'
+
+"CocSearch alternative
+Plug 'dyng/ctrlsf.vim'
+
 call plug#end()
 
 let g:float_preview#docked = 0
@@ -95,8 +102,8 @@ set previewheight=5
 " Tell ALE to use OmniSharp for linting C# files, and no other linters.
 let g:ale_linters = { 'cs': ['OmniSharp'] }
 let g:ale_sign_column_always = 1
-nmap <silent> <Leader>g[ <Plug>(ale_previous_wrap)
-nmap <silent> <Leader>g] <Plug>(ale_next_wrap)
+nmap <silent> <C-k> <Plug>(ale_previous)
+nmap <silent> <C-j> <Plug>(ale_next)
 
 "Omni use fzf
 let g:OmniSharp_selector_ui = 'fzf'
@@ -288,6 +295,15 @@ nnoremap <Leader>q :bd<CR>
 nnoremap <Leader>qa :bufdo bd<CR>
 
 "End Personal remapping
+
+"CtrlSF
+nmap     <C-F>f <Plug>CtrlSFPrompt
+vmap     <C-F>f <Plug>CtrlSFVwordPath
+nnoremap <C-F>o :CtrlSFOpen<CR>
+
+let g:ctrlsf_auto_focus = {
+    \ "at": "start"
+    \ }
 
 " Vim with me
 nnoremap <leader>vwm :call ColorMyPencils()<CR>
