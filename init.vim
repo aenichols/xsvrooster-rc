@@ -166,7 +166,7 @@ fun! ColorMyPencils()
     highlight Visual term=reverse cterm=reverse guibg=#504945
 
     highlight ColorColumn ctermbg=0 guibg=grey
-    highlight Normal guibg=#282828 " for gruvbox dark, use 'none' for trans term
+    highlight Normal guibg=none " for gruvbox dark #282828, use 'none' for trans term
     highlight Folded guibg=none
 
     highlight LineNr guifg=#5eacd3
@@ -253,10 +253,10 @@ vnoremap K :m '<-2<CR>gv=gv
 vnoremap X "_d
 
 " Maps Alt-[Arrows] to resizing a window split
-map <silent> <A-LEFT> <C-w><
-map <silent> <A-DOWN> <C-W>-
-map <silent> <A-UP> <C-W>+
-map <silent> <A-RIGHT> <C-w>>
+map <silent> <C-LEFT> <C-w><
+map <silent> <C-DOWN> <C-W>-
+map <silent> <C-UP> <C-W>+
+map <silent> <C-RIGHT> <C-w>>
 
 " greatest remap ever
 vnoremap <leader>p "_dP
