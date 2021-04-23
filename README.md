@@ -1,1 +1,1 @@
-# xsvrooster-rrc - big thanks to ThePrimeagen
+# xsvrooster-rc - Big Thanks to ThePrimeagen
