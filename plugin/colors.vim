@@ -36,12 +36,9 @@ call ColorMyPencils()
 nnoremap <leader>vwm :call ColorMyPencils()<CR>
 nnoremap <leader>vwb :let g:theprimeagen_colorscheme =
 
-
-
-
-
-
-"ROOSTER
+"##############################################################################
+"#ROOSTER                                                                     #
+"##############################################################################
 
 " Colorize line numbers in insert and visual modes
 " ------------------------------------------------
@@ -57,32 +54,28 @@ function! SetCursorLineNrColorInsert(mode)
     endif
 endfunction
 
-
 function! SetCursorLineNrColorVisual()
-    set updatetime=0
+  set updatetime=0
 
-    " Visual mode: yellow
-    highlight CursorLineNr cterm=none ctermfg=9 guifg=#d29026
+  " Visual mode: yellow
+  highlight CursorLineNr cterm=none ctermfg=9 guifg=#d29026
 
-	" Set list
-	set list
+  " Set list
+  set list
 
-	return ''
+  return ''
 endfunction
-
 
 function! ResetCursorLineNrColor()
-    set updatetime=4000
-    highlight CursorLineNr cterm=none ctermfg=0 guifg=#d2c926
-	set nolist
+  set updatetime=4000
+  highlight CursorLineNr cterm=none ctermfg=0 guifg=#d2c926
+  set nolist
 endfunction
-
 
 vnoremap <silent> <expr> <SID>SetCursorLineNrColorVisual SetCursorLineNrColorVisual()
 nnoremap <silent> <script> v v<SID>SetCursorLineNrColorVisual
 nnoremap <silent> <script> V V<SID>SetCursorLineNrColorVisual
 nnoremap <silent> <script> <C-v> <C-v><SID>SetCursorLineNrColorVisual
-
 
 augroup CursorLineNrColorSwap
     autocmd!
@@ -90,3 +83,4 @@ augroup CursorLineNrColorSwap
     autocmd InsertLeave * call ResetCursorLineNrColor()
     autocmd CursorHold * call ResetCursorLineNrColor()
 augroup END
+

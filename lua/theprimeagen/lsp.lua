@@ -9,7 +9,8 @@ local probeLoc  = 'C:/Users/anthony.nichols/.vscode/extensions/angular.ng-templa
 local angularCmd = {"ngserver.cmd", "--stdio", "--tsProbeLocations", probeLoc , "--ngProbeLocations", probeLoc}
 
 require'lspconfig'.angularls.setup{
-  cmd = angularCmd ,
+  on_attach = on_attach,
+  cmd = angularCmd,
   on_new_config = function(new_config, new_root_dir)
     new_config.cmd = angularCmd
   end,
@@ -52,6 +53,7 @@ local omnisharp_bin = "C:/OmniSharp/OmniSharp.exe"
 -- on Windows
 -- local omnisharp_bin = "/path/to/omnisharp/OmniSharp.exe"
 require'lspconfig'.omnisharp.setup{
+    on_attach = on_attach,
     cmd = { omnisharp_bin, "--languageserver" , "--hostPID", tostring(pid) };
     ...
 }

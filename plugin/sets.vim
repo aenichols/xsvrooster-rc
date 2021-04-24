@@ -32,8 +32,9 @@ set shortmess+=c
 
 set colorcolumn=80
 
-
-"ROOSTER
+"##############################################################################
+"#ROOSTER                                                                     #
+"##############################################################################
 set cursorcolumn
 
 "syntax
@@ -54,6 +55,6 @@ set foldcolumn=2
 set nofoldenable
 
 "Column Ruler Override
-autocmd BufNewFile,BufRead *.cs set colorcolumn=160
-autocmd BufNewFile,BufRead *.xaml set colorcolumn=160
-autocmd BufNewFile,BufRead *.ts set colorcolumn=140
+autocmd BufEnter *.cs   set colorcolumn=160
+autocmd BufEnter *.xaml set colorcolumn=160
+autocmd BufEnter *.ts   set colorcolumn=140
