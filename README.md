@@ -9,5 +9,5 @@
         ░         ░ ░      ░ ░        ░              ░  ░   ░           ░     ░ ░      
                                                                               ░       
 ```diff
-@@ Big Thanks To ThePrimeagen@@
+! Big Thanks To ThePrimeagen
 ```
