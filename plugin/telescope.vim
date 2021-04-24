@@ -9,6 +9,7 @@ nnoremap <leader>pb :lua require('telescope.builtin').buffers()<CR>
 nnoremap <leader>vht :lua require('telescope.builtin').help_tags()<CR>
 nnoremap <leader>vrc :lua require('theprimeagen.telescope').search_dotfiles()<CR>
 nnoremap <leader>va :lua require('theprimeagen.telescope').anime_selector()<CR>
-nnoremap <leader>vc :lua require('theprimeagen.telescope').chat_selector()<CR>
+"nnoremap <leader>vc :lua require('theprimeagen.telescope').chat_selector()<CR>
 nnoremap <leader>gc :lua require('theprimeagen.telescope').git_branches()<CR>
 nnoremap <leader>glc :lua require('theprimeagen.telescope').git_local_branches()<CR>
+
