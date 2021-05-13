@@ -52,9 +52,9 @@ set mouse=a
 "folding
 set foldmethod=expr
 set foldexpr=nvim_treesitter#foldexpr()
-"set foldmethod=syntax
 set foldcolumn=2
-"set nofoldenable
+set fillchars=fold:\ ,
+set foldlevelstart=20
 
 "Column Ruler Override
 autocmd BufEnter *.cs   set colorcolumn=160
