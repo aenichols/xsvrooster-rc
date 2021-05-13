@@ -4,7 +4,8 @@ require("harpoon").setup({
         ["C:\\Source\\ConnectBooster\\ConnectBooster.Frontend"] = {
             term = {
                 cmds = {
-                    "bash && echo HALLO!\n",
+                    "bash -c 'ng s'",
+                    "bash -c 'ng t'",
                 }
             }
         }

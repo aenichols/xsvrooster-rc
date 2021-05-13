@@ -8,10 +8,10 @@ lua require("theprimeagen")
 nnoremap <leader>a :lua require("harpoon.mark").add_file()<CR>
 nnoremap <C-e> :lua require("harpoon.ui").toggle_quick_menu()<CR>
 
-nnoremap <C-h> :lua require("harpoon.ui").nav_file(1)<CR>
-nnoremap <C-t> :lua require("harpoon.ui").nav_file(2)<CR>
-nnoremap <C-n> :lua require("harpoon.ui").nav_file(3)<CR>
-nnoremap <C-s> :lua require("harpoon.ui").nav_file(4)<CR>
+nnoremap <C-h>7 :lua require("harpoon.ui").nav_file(1)<CR>
+nnoremap <C-h>8 :lua require("harpoon.ui").nav_file(2)<CR>
+nnoremap <C-h>9 :lua require("harpoon.ui").nav_file(3)<CR>
+nnoremap <C-h>0 :lua require("harpoon.ui").nav_file(4)<CR>
 nnoremap <leader>ta :lua require("harpoon.term").gotoTerminal(1)<CR>
 nnoremap <leader>ts :lua require("harpoon.term").gotoTerminal(2)<CR>
 nnoremap <leader>cd :lua require("harpoon.term").sendCommand(1, 1)<CR>

@@ -1,29 +1,25 @@
 local sumneko_root_path = 'C:/Users/anthony.nichols/.vscode/extensions/sumneko.lua-1.20.4/server'
 local sumneko_binary = sumneko_root_path .. "/bin/Windows/lua-language-server"
 
-local on_attach = require'completion'.on_attach
+local function on_attach()
+    -- TODO: TJ told me to do this and I should do it because he is Telescopic
+    -- "Big Tech" "Cash Money" Johnson
+end
 
-require'lspconfig'.tsserver.setup{ on_attach=on_attach }
+local function on_cwd()
+  return vim.loop.cwd()
+end
 
-local probeLoc  = 'C:/Users/anthony.nichols/.vscode/extensions/angular.ng-template-11.2.11/node_modules'
-local angularCmd = {"ngserver.cmd", "--stdio", "--tsProbeLocations", probeLoc , "--ngProbeLocations", probeLoc}
-
-require'lspconfig'.angularls.setup{
-  on_attach = on_attach,
-  cmd = angularCmd,
-  on_new_config = function(new_config, new_root_dir)
-    new_config.cmd = angularCmd
-  end,
-}
+require'lspconfig'.tsserver.setup { on_attach=on_attach }
 
 require'lspconfig'.clangd.setup {
     on_attach = on_attach,
-    root_dir = function() return vim.loop.cwd() end
+    root_dir = on_cwd
 }
 
 require'lspconfig'.sumneko_lua.setup {
     on_attach = on_attach,
-    cmd = {sumneko_binary, "-E", sumneko_root_path .. "/main.lua"};
+    cmd = { sumneko_binary, "-E", sumneko_root_path .. "/main.lua" };
     settings = {
         Lua = {
             runtime = {
@@ -47,14 +43,41 @@ require'lspconfig'.sumneko_lua.setup {
     },
 }
 
+local probeLoc  = 'C:/Users/anthony.nichols/.vscode/extensions/angular.ng-template-11.2.11/node_modules'
+local angularCmd = { "ngserver.cmd", "--stdio", "--tsProbeLocations", probeLoc , "--ngProbeLocations", probeLoc }
+require'lspconfig'.angularls.setup {
+  on_attach = on_attach,
+  cmd = angularCmd,
+  root_dir = on_cwd,
+  on_new_config = function(new_config, new_root_dir)
+    new_config.cmd = angularCmd
+    new_config.root_dir = on_cwd
+  end,
+}
+
 local pid = vim.fn.getpid()
 -- On linux/darwin if using a release build, otherwise under scripts/OmniSharp(.Core)(.cmd)
 local omnisharp_bin = "C:/OmniSharp/OmniSharp.exe"
 -- on Windows
 -- local omnisharp_bin = "/path/to/omnisharp/OmniSharp.exe"
-require'lspconfig'.omnisharp.setup{
+require'lspconfig'.omnisharp.setup {
     on_attach = on_attach,
+    root_dir = on_cwd,
     cmd = { omnisharp_bin, "--languageserver" , "--hostPID", tostring(pid) };
     ...
 }
+
+local opts = {
+    -- whether to highlight the currently hovered symbol
+    -- disable if your cpu usage is higher than you want it
+    -- or you just hate the highlight
+    -- default: true
+    highlight_hovered_item = true,
+
+    -- whether to show outline guides
+    -- default: true
+    show_guides = true,
+}
+
+require('symbols-outline').setup(opts)
 

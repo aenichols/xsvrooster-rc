@@ -1,4 +1,4 @@
-let g:theprimeagen_colorscheme = "gruvbox"
+let g:theprimeagen_colorscheme = "tokyodark"
 fun! ColorMyPencils()
     let g:gruvbox_contrast_dark = 'hard'
     if exists('+termguicolors')
@@ -28,6 +28,8 @@ fun! ColorMyPencils()
 
     "ROOSTER
     hi CursorColumn guibg=#404040
+    hi Search guibg=black guifg=wheat
+    hi IncSearch guibg=black guifg=pink
 endfun
 
 call ColorMyPencils()

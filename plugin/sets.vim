@@ -50,9 +50,11 @@ set mouse=a
 :set listchars=tab:→\ ,space:·,nbsp:␣,trail:•,eol:¶,precedes:«,extends:»
 
 "folding
-set foldmethod=syntax
+set foldmethod=expr
+set foldexpr=nvim_treesitter#foldexpr()
+"set foldmethod=syntax
 set foldcolumn=2
-set nofoldenable
+"set nofoldenable
 
 "Column Ruler Override
 autocmd BufEnter *.cs   set colorcolumn=160

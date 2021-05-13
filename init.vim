@@ -18,9 +18,10 @@ Plug 'ambv/black'
 
 " Plebvim lsp Plugins
 Plug 'neovim/nvim-lspconfig'
-Plug 'nvim-lua/completion-nvim'
-Plug 'tjdevries/nlua.nvim'
-Plug 'tjdevries/lsp_extensions.nvim'
+Plug 'hrsh7th/nvim-compe'
+
+Plug 'glepnir/lspsaga.nvim'
+Plug 'simrat39/symbols-outline.nvim'
 
 " Neovim Tree shitter
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
@@ -32,7 +33,6 @@ Plug 'szw/vim-maximizer'
 
 " THANKS BFREDL
 Plug 'bryall/contextprint.nvim'
-Plug 'ThePrimeagen/af-pluth-pluth'
 
 Plug 'rust-lang/rust.vim'
 Plug 'tweekmonster/gofmt.vim'
@@ -40,12 +40,9 @@ Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
 Plug 'vim-utils/vim-man'
 Plug 'mbbill/undotree'
-Plug 'vuciv/vim-bujo'
 Plug 'tpope/vim-dispatch'
 Plug 'theprimeagen/vim-be-good'
 Plug 'gruvbox-community/gruvbox'
-Plug 'octol/vim-cpp-enhanced-highlight'
-Plug 'tpope/vim-projectionist'
 Plug 'tpope/vim-projectionist'
 
 " telescope requirements...
@@ -53,21 +50,16 @@ Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzy-native.nvim'
-Plug 'colepeters/spacemacs-theme.vim'
 
-Plug 'sainnhe/gruvbox-material'
-Plug 'phanviet/vim-monokai-pro'
 Plug 'flazz/vim-colorschemes'
 Plug 'chriskempson/base16-vim'
-Plug 'dracula/vim', { 'as': 'dracula' }
-" Plug '/home/mpaulson/personal/VimDeathmatch/client'
+Plug 'tiagovla/tokyodark.nvim'
+Plug 'folke/tokyonight.nvim'
 
 " HARPOON!!
 Plug 'ThePrimeagen/harpoon'
 Plug 'ThePrimeagen/rfc-reader'
 Plug 'mhinz/vim-rfc'
-
-"Plug 'ThePrimeagen/neovim-irc-ui'
 
 " prettier
 Plug 'sbdchd/neoformat'
@@ -77,6 +69,16 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
 call plug#end()
+
+"Tokyo Night
+let g:tokyonight_style = "night"
+let g:tokyonight_italic_functions = 1
+let g:tokyonight_sidebars = [ "qf", "vista_kind", "terminal", "packer" ]
+"Tokyo Dark
+let g:tokyodark_transparent_background = 1
+let g:tokyodark_enable_italic_comment = 1
+let g:tokyodark_enable_italic = 1
+let g:tokyodark_color_gamma = "1.0"
 
 "AirLine
 let g:airline_theme='bubblegum'
@@ -97,6 +99,7 @@ endif
 let loaded_matchparen = 1
 let mapleader = " "
 
+nnoremap <silent> <C-f> :lua require("harpoon.term").sendCommand(1, "bash\n"); require("harpoon.term").gotoTerminal(1)<CR>
 nnoremap <leader>ghw :h <C-R>=expand("<cword>")<CR><CR>
 nnoremap <leader>bs /<C-R>=escape(expand("<cWORD>"), "/")<CR><CR>
 nnoremap <leader>u :UndotreeShow<CR>

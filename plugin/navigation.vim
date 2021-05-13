@@ -43,10 +43,10 @@ nnoremap <leader>k :wincmd k<CR>
 nnoremap <leader>l :wincmd l<CR>
 
 " Maps Ctrl-[Arrows] to resizing a window split
-map <silent> <C-M-LEFT> <C-w><
-map <silent> <C-M-DOWN> <C-W>-
-map <silent> <C-M-UP> <C-W>+
-map <silent> <C-M-RIGHT> <C-w>>
+map <silent> <C-M-h> <C-w><
+map <silent> <C-M-j> <C-W>-
+map <silent> <C-M-k> <C-W>+
+map <silent> <C-M-l> <C-w>>
 
 map S ddO
 map cc S
