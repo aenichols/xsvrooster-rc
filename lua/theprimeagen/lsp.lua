@@ -1,3 +1,5 @@
+
+
 local sumneko_root_path = 'C:/Users/anthony.nichols/.vscode/extensions/sumneko.lua-1.20.4/server'
 local sumneko_binary = sumneko_root_path .. "/bin/Windows/lua-language-server"
 

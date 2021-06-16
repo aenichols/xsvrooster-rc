@@ -35,7 +35,7 @@ Plug 'szw/vim-maximizer'
 Plug 'bryall/contextprint.nvim'
 
 Plug 'rust-lang/rust.vim'
-Plug 'tweekmonster/gofmt.vim'
+Plug 'darrikonn/gofmt'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
 Plug 'vim-utils/vim-man'
@@ -68,6 +68,12 @@ Plug 'sbdchd/neoformat'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
+" Zen Mode
+Plug 'junegunn/goyo.vim'
+
+" Ale for stupid EsLints
+" Plug 'w0rp/ale'
+
 call plug#end()
 
 "Tokyo Night
@@ -84,6 +90,15 @@ let g:tokyodark_color_gamma = "1.0"
 let g:airline_theme='bubblegum'
 let g:airline_powerline_fonts = 1
 
+"Ale
+"let g:ale_echo_msg_format = '%linter% : %s'
+"let g:ale_linters_explicit = 1
+"let g:ale_linters = {
+"\   'typescript': ['eslint'],
+"\}
+"let g:ale_disable_lsp = 1
+"let g:ale_virtualtext_cursor = 1
+
 " let g:vimspector_install_gadgets = [ 'debugpy', 'vscode-cpptools', 'CodeLLDB' ]
 
 lua require("theprimeagen")
@@ -99,6 +114,7 @@ endif
 let loaded_matchparen = 1
 let mapleader = " "
 
+nnoremap <silent> Q <nop>
 nnoremap <silent> <C-f> :lua require("harpoon.term").sendCommand(1, "bash\n"); require("harpoon.term").gotoTerminal(1)<CR>
 nnoremap <leader>ghw :h <C-R>=expand("<cword>")<CR><CR>
 nnoremap <leader>bs /<C-R>=escape(expand("<cWORD>"), "/")<CR><CR>
@@ -108,7 +124,8 @@ nnoremap <Leader><CR> :so ~/AppData/Local/nvim/init.vim<CR>
 nnoremap <Leader>+ :vertical resize +5<CR>
 nnoremap <Leader>- :vertical resize -5<CR>
 nnoremap <Leader>rp :resize 100<CR>
-nnoremap <Leader>ee oif err != nil {<CR>log.Fatalf("%+v\n", err)<CR>}<CR><esc>kkI<esc>
+"nnoremap <Leader>ee oif err != nil {<CR>log.Fatalf("%+v\n", err)<CR>}<CR><esc>kkI<esc>
+nnoremap <Leader>ee oconsole.log(`HALLO ${}`);<esc>hhi
 nnoremap <Leader>cpu a%" PRIu64 "<esc>
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
