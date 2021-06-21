@@ -4,8 +4,8 @@ require("harpoon").setup({
         ["C:\\Source\\ConnectBooster\\ConnectBooster.Frontend"] = {
             term = {
                 cmds = {
-                    "bash -c 'ng s'",
-                    "bash -c 'ng t'",
+                    "ng s",
+                    "eslint --fix ",
                 }
             }
         }
