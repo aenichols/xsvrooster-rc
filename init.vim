@@ -35,7 +35,7 @@ Plug 'szw/vim-maximizer'
 Plug 'bryall/contextprint.nvim'
 
 Plug 'rust-lang/rust.vim'
-Plug 'darrikonn/gofmt'
+Plug 'darrikonn/vim-gofmt'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
 Plug 'vim-utils/vim-man'

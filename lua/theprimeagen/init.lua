@@ -1,4 +1,5 @@
 require("theprimeagen.xsvrooster.telescope")
+local colors = require("theprimeagen.xsvrooster.colors")
 require("theprimeagen.telescope")
 require("theprimeagen.harpoon")
 require("theprimeagen.lsp")
@@ -18,3 +19,4 @@ if pcall(require, 'plenary') then
   end
 end
 
+colors.setup()
