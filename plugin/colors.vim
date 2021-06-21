@@ -10,6 +10,8 @@ fun! ColorMyPencils()
     set background=dark
     if has('nvim')
         call luaeval('vim.cmd("colorscheme " .. _A[1])', [g:theprimeagen_colorscheme])
+
+        call luaeval('vim.highlight.create("visual", { ctermbg=0, guibg=white, guifg=black }, false)', [])
     else
         " TODO: What the way to use g:theprimeagen_colorscheme
         colorscheme gruvbox
@@ -30,7 +32,7 @@ fun! ColorMyPencils()
     hi CursorColumn guibg=#404040
     hi Search guibg=black guifg=wheat
     hi IncSearch guibg=black guifg=pink
-endfun
+endfun:
 
 call ColorMyPencils()
 
