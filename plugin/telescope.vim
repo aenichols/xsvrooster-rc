@@ -13,3 +13,5 @@ nnoremap <leader>va :lua require('theprimeagen.telescope').anime_selector()<CR>
 nnoremap <leader>gc :lua require('theprimeagen.telescope').git_branches()<CR>
 nnoremap <leader>glc :lua require('theprimeagen.telescope').git_local_branches()<CR>
 
+nnoremap <leader>vpp :lua require('theprimeagen.telescope').search_private_proxy()<CR>
+

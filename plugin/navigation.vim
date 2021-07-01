@@ -57,3 +57,7 @@ nnoremap <Leader>qa :bufdo bd<CR>
 
 map <MiddleMouse> <Nop>
 imap <MiddleMouse> <Nop>
+
+" Vim Setup Splits
+nmap <leader>vss  :wincmd o<CR>:G<CR>gU<CR>:wincmd v<CR>:wincmd H<CR>:wincmd l<CR>:wincmd v<CR>10<C-W>-:wincmd l<CR>:lua require("harpoon.term").gotoTerminal(1)<CR>abash
+

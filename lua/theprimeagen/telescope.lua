@@ -113,6 +113,7 @@ end
 --#ROOSTER                                                                    #
 --##############################################################################
 M.git_local_branches = require("theprimeagen.xsvrooster.telescope").git_local_branches;
+M.search_private_proxy  = require("theprimeagen.xsvrooster.telescope").search_private_proxy;
 
 return M
 
